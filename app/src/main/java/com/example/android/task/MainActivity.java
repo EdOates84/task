@@ -1,93 +1,78 @@
 package com.example.android.task;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText mEmailField;
-    private EditText mPasswordField;
 
-    private Button mLoginBtn;
-    private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
+    private RecyclerView recyclerView;
+//    private RecyclerView.LayoutManager layoutManager;
+//    private FirebaseRecyclerAdapter<User , > ;
+    private ArrayList<User> list;
+    private MyAdapter adapter;
 
-    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAuth = FirebaseAuth.getInstance();
 
-        mEmailField = (EditText) findViewById(R.id.emailfield);
-        mPasswordField = (EditText) findViewById(R.id.passwordfield);
-        mLoginBtn = (Button) findViewById(R.id.loginbtn);
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
+        recyclerView = (RecyclerView) findViewById(R.id.myRecycler);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        list = new ArrayList<User>();
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+
+        RelativeLayout layout = (RelativeLayout) findViewById(R.id.rl_container);
+
+
+        mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-
-                if (firebaseAuth.getCurrentUser() != null) {
-                    startActivity(new Intent(MainActivity.this, AccountActivity.class));
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren())
+                {
+                    User u = dataSnapshot1.getValue(User.class);
+                    list.add(u);
                 }
+
+                adapter = new MyAdapter(MainActivity.this,list);
+                recyclerView.setAdapter(adapter);
             }
 
-        };
-
-
-        mLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-
-                startSignIn();
-
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(MainActivity.this, "opss.. Something is wrong", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        mAuth.addAuthStateListener(mAuthListener);
 
     }
 
 
-    private void startSignIn() {
-
-        String email = mEmailField.getText().toString();
-        String password = mPasswordField.getText().toString();
-
-        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-
-            Toast.makeText(MainActivity.this, "fields are empty", Toast.LENGTH_LONG).show();
-        } else {
-
-            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (!task.isSuccessful()) {
-                        Toast.makeText(MainActivity.this, "Sign In Problem", Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
 
 
-        }
-    }
+
+//        public void logout(View view) {
+//            FirebaseAuth.getInstance().signOut();
+//            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+//            finish();
+//    }
 }
