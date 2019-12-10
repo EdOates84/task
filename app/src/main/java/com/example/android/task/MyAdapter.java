@@ -4,7 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.TextView;
+
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,8 +16,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
 
 
-    Context context;
-    ArrayList<User> users;
+    private Context context;
+    private ArrayList<User> users;
     public MyAdapter(Context c, ArrayList<User> u)
     {
         context = c;
@@ -34,7 +35,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         holder.name.setText(users.get(position).getName());
-        holder.email.setText(users.get(position).getEmail());
+        holder.enrollment.setText(users.get(position).getEnrollment());
         holder.branch.setText(users.get(position).getBranch());
     }
 
@@ -45,13 +46,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     class MyViewHolder extends RecyclerView.ViewHolder
     {
-        EditText name,email,branch;
+        TextView name,enrollment,branch;
 
         public MyViewHolder(View itemView){
             super(itemView);
-            name = (EditText) itemView.findViewById(R.id.Name);
-            email = (EditText) itemView.findViewById(R.id.Email);
-            branch = (EditText) itemView.findViewById(R.id.Branch);
+            name = itemView.findViewById(R.id.Name);
+            enrollment =  itemView.findViewById(R.id.Enrollment_no);
+            branch =  itemView.findViewById(R.id.Branch);
         }
 
     }

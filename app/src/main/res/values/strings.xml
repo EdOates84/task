@@ -3,4 +3,5 @@
     <string name="name">Name: </string>
     <string name="enrollment">Enrollment No.: </string>
     <string name="branch">Branch: </string>
+    <string name="logout">Logout</string>
 </resources>

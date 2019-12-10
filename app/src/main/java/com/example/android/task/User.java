@@ -28,8 +28,8 @@ public class User {
         return branch;
     }
 
-    public void setBranch(String name) {
-        this.name = branch;
+    public void setBranch(String branch) {
+        this.branch = branch;
     }
 
 
