@@ -6,9 +6,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
+
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,10 +28,12 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    private DrawerLayout drawer;
+
 
     private DatabaseReference mDatabase;
     private RecyclerView recyclerView;
-//    private RecyclerView.LayoutManager layoutManager;
+    //    private RecyclerView.LayoutManager layoutManager;
 //    private FirebaseRecyclerAdapter<User , > ;
     private ArrayList<User> list;
     private MyAdapter adapter;
@@ -37,6 +44,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawer = findViewById(R.id.drawer_layout);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
 
 
         recyclerView = (RecyclerView) findViewById(R.id.myRecycler);
@@ -54,13 +70,12 @@ public class MainActivity extends AppCompatActivity {
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren())
-                {
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     User u = dataSnapshot1.getValue(User.class);
                     list.add(u);
                 }
 
-                adapter = new MyAdapter(MainActivity.this,list);
+                adapter = new MyAdapter(MainActivity.this, list);
                 recyclerView.setAdapter(adapter);
             }
 
@@ -72,10 +87,22 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+
+            super.onBackPressed();
+        }
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu,menu);
+        inflater.inflate(R.menu.menu, menu);
 
         return true;
     }
@@ -102,4 +129,5 @@ public class MainActivity extends AppCompatActivity {
 //            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
 //            finish();
 //    }
+
 }
