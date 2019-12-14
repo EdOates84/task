@@ -18,7 +18,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     private Context context;
     private ArrayList<User> users;
-    public MyAdapter(Context c, ArrayList<User> u)
+    public MyAdapter(MainActivity c, ArrayList<User> u)
     {
         context = c;
         users = u;

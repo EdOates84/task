@@ -10,38 +10,36 @@
     tools:context=".MainActivity"
     tools:openDrawer="start">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"/>
-    <androidx.appcompat.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:id="@+id/toolbar"
-        android:background="@android:color/transparent"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:elevation="4dp" />
-
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+    <include
+        layout="@layout/app_bar_home"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
     <com.google.android.material.navigation.NavigationView
+        android:background="#fff"
+        android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:id="@+id/nev_view"
+        android:fitsSystemWindows="true"
         app:headerLayout="@layout/nev_header"
-        app:menu="@menu/drawer_menu"/>
+        app:menu="@menu/drawer_menu" />
+
 
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/myRecycler"
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/myRecycler"
-        >
+        android:visibility="visible">
+
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -53,3 +51,26 @@
 
 
 <!--    android:orientation="vertical"-->
+
+<!--<LinearLayout-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="match_parent"-->
+<!--android:orientation="vertical"/>-->
+<!--<androidx.appcompat.widget.Toolbar-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="?attr/actionBarSize"-->
+<!--android:id="@+id/toolbar"-->
+<!--android:background="@android:color/transparent"-->
+<!--android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"-->
+<!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
+<!--android:elevation="4dp" />-->
+
+
+
+<!--<com.google.android.material.navigation.NavigationView-->
+<!--android:layout_width="wrap_content"-->
+<!--android:layout_height="match_parent"-->
+<!--android:layout_gravity="start"-->
+<!--android:id="@+id/nev_view"-->
+<!--app:headerLayout="@layout/nev_header"-->
+<!--app:menu="@menu/drawer_menu"/>-->
